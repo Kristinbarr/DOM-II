@@ -1,20 +1,24 @@
 
 // MOUSEOVER - change image to a gif
 const headerContainer = document.querySelector('.intro')
+const headerH2 = headerContainer.querySelector('h2')
+const headerP = headerContainer.querySelector('p')
 const headerImg = document.querySelector('header img')
 
 headerImg.addEventListener('mouseover', () => {
-  headerImg.src = 'img/vanagon.gif'
+  headerImg.src = '/img/vanagon.gif'
   headerContainer.style.textAlign = 'center'
-  // headerImg.style.objectFit = contain
-  // headerImg.style.width = '400px'
-  // headerImg.style.height = '240px'
+  headerH2.style.textAlign = 'left'
+  headerP.style.textAlign = 'left'
+  headerImg.style.objectFit = 'cover'
+  headerImg.style.overflow = 'hidden'
+  headerImg.style.height = '240px'
+  headerImg.style.width = '55%'
 })
 
 headerImg.addEventListener('mouseout', () => {
-  headerImg.src = 'img/fun-bus.jpg'
-  // headerImg.style['object-fit'] = fill
-  // headerImg.style.height = '240px'
+  headerImg.src = '/img/fun-bus.jpg'
+  headerImg.style.width = '100%'
 })
 
 
@@ -41,23 +45,32 @@ adventureImg.onwheel = zoom2
 
 // SCROLL
 const homeContainer = document.querySelector('body')
+const contentPickCont = document.querySelector('.content-pick')
 const van = document.createElement('img')
+const divForVan = document.createElement('div')
+divForVan.className = 'bottom-div'
 van.src = "img/van.png"
-van.style.zIndex = '-1'
+van.style.zIndex = '2'
 van.style.height = "200px"
 van.style.position = 'fixed'
-van.style.top = '750px'
-
-// van.style.transform = 'rotate(270deg)'
+van.style.top = '-200px'
+van.style.right = '0px'
 homeContainer.prepend(van)
+divForVan.style.height = '450px'
+contentPickCont.appendChild(divForVan)
 
 let last_known_scroll_position = 0
 let ticking = false
 
 function doSomething(scroll_pos) {
-  van.style.right = `${scroll_pos}px`
-  van.style.transform = `rotate(${scroll_pos}deg)`
-  console.log(van)
+  van.style.top = `${scroll_pos-200}px`
+  van.style.transform = `rotate(-${scroll_pos/2.8}deg)`
+  // console.log(scroll_pos)
+  // next -> add space with a div
+  // make van translate right to left @ 1010px
+  // when it gets to the bottom of the page
+  // next -> make third image zoom to 100% upon scrolling
+
 }
 
 window.addEventListener('scroll', function(e) {
@@ -73,7 +86,46 @@ window.addEventListener('scroll', function(e) {
 
 
 
-// FOCUS
+// DROP
+// couldn't get it to work :(
+
+const demo = document.createElement('p')
+demo.textContent = 'testingggg'
+demo.style.textSize = '50px'
+
+const dropCont = document.querySelector('.content-destination')
+const dropImg = document.querySelector('.content-destination img')
+const dropDiv = document.querySelector('.bottom-div')
+dropCont.ondrop = `drop(event)`
+dropCont.ondragover = `allowDrop(event)`
+dropImg.ondragstart = `dragStart(event)`
+dropImg.draggable = 'true'
+dropImg.id = 'dragtarget'
+dropImg.style.position = 'relative'
+dropDiv.id = 'div1'
+dropDiv.ondrop = `drop(event)`
+dropDiv.ondragover = `allowDrop(event)`
+dropDiv.prepend(demo)
+
+// external library works for dragging
+Drag.init(document.getElementById('dragtarget'))
+
+function dragStart(event) {
+  event.dataTransfer.setData('text', event.target.id)
+  console.log(dropImg)
+  document.getElementById('demo').innerHTML = 'Started to drag the p element'
+}
+
+function allowDrop(event) {
+  event.preventDefault()
+}
+
+function drop(event) {
+  event.preventDefault()
+  var data = event.dataTransfer.getData('text')
+  event.target.appendChild(document.getElementById(data))
+  document.getElementById('demo').innerHTML = 'The p element was dropped'
+}
 
 
 
