@@ -21,6 +21,24 @@ headerImg.addEventListener('mouseout', () => {
   headerImg.style.width = '100%'
 })
 
+const destinations = document.querySelectorAll('.destination')
+const destPrice1 = document.createElement('p')
+destPrice1.textContent = '$55'
+destPrice1.style.position = 'absolute'
+destPrice1.style.align = 'center'
+destPrice1.style.backgroundColor = 'lightblue'
+destPrice1.style.padding = '5px 50px'
+destPrice1.style.margin = '20px 40px'
+destPrice1.style.visibility = 'hidden'
+destinations[0].appendChild(destPrice1)
+
+destinations[0].addEventListener('mouseover', () => {
+  destPrice1.style.visibility = 'visible'
+})
+destinations[0].addEventListener('mouseout', () => {
+  destPrice1.style.visibility = 'hidden'
+})
+
 
 // WHEEL
 const zoom1 = (event) => {
@@ -63,8 +81,8 @@ let last_known_scroll_position = 0
 let ticking = false
 
 function doSomething(scroll_pos) {
-  van.style.top = `${scroll_pos-200}px`
-  van.style.transform = `rotate(-${scroll_pos/2.8}deg)`
+  van.style.top = `${scroll_pos-300}px`
+  van.style.transform = `rotate(-${scroll_pos/3}deg)`
   // console.log(scroll_pos)
   // next -> add space with a div
   // when it gets to the bottom of the page
@@ -89,10 +107,6 @@ window.addEventListener('scroll', function(e) {
 // DROP
 // couldn't get it to work :(
 
-const demo = document.createElement('p')
-demo.textContent = 'testingggg'
-demo.style.textSize = '50px'
-
 const dropCont = document.querySelector('.content-destination')
 const dropImg = document.querySelector('.content-destination img')
 const dropDiv = document.querySelector('.bottom-div')
@@ -102,14 +116,16 @@ dropImg.ondragstart = `dragStart(event)`
 dropImg.draggable = 'true'
 dropImg.id = 'dragtarget'
 dropImg.style.position = 'relative'
-dropDiv.id = 'div1'
+dropDiv.id = 'demo'
 dropDiv.ondrop = `drop(event)`
 dropDiv.ondragover = `allowDrop(event)`
-dropDiv.prepend(demo)
+// const demo = document.createElement('p')
+// demo.textContent = 'testingggg'
+// dropDiv.prepend(demo)
+
 
 function dragStart(event) {
   event.dataTransfer.setData('text', event.target.id)
-  console.log(dropImg)
   document.getElementById('demo').innerHTML = 'Started to drag the p element'
 }
 
