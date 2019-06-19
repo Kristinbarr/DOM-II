@@ -43,7 +43,7 @@ letsGoImg.onwheel = zoom1
 adventureImg.onwheel = zoom2
 
 
-// SCROLL
+// SCROLL - moving bus animation
 const homeContainer = document.querySelector('body')
 const contentPickCont = document.querySelector('.content-pick')
 const van = document.createElement('img')
@@ -67,9 +67,9 @@ function doSomething(scroll_pos) {
   van.style.transform = `rotate(-${scroll_pos/2.8}deg)`
   // console.log(scroll_pos)
   // next -> add space with a div
-  // make van translate right to left @ 1010px
   // when it gets to the bottom of the page
-  // next -> make third image zoom to 100% upon scrolling
+  // make van translate right to left @ 1010px
+  // next -> make third image zoom in 20% to 100%
 
 }
 
@@ -107,9 +107,6 @@ dropDiv.ondrop = `drop(event)`
 dropDiv.ondragover = `allowDrop(event)`
 dropDiv.prepend(demo)
 
-// external library works for dragging
-Drag.init(document.getElementById('dragtarget'))
-
 function dragStart(event) {
   event.dataTransfer.setData('text', event.target.id)
   console.log(dropImg)
@@ -127,6 +124,11 @@ function drop(event) {
   document.getElementById('demo').innerHTML = 'The p element was dropped'
 }
 
+// external library works for dragging
+const dragIndicator = document.createElement('p')
+dragIndicator.textContent = 'I\'m draggable!'
+dropCont.appendChild(dragIndicator)
+Drag.init(document.getElementById('dragtarget'))
 
 
 
