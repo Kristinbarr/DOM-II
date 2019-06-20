@@ -21,25 +21,6 @@ headerImg.addEventListener('mouseout', () => {
   headerImg.style.width = '100%'
 })
 
-const destinations = document.querySelectorAll('.destination')
-const destPrice1 = document.createElement('p')
-destPrice1.textContent = '$55'
-destPrice1.style.position = 'absolute'
-destPrice1.style.align = 'center'
-destPrice1.style.backgroundColor = 'lightblue'
-destPrice1.style.padding = '5px 50px'
-destPrice1.style.margin = '20px 40px'
-destPrice1.style.visibility = 'hidden'
-destinations[0].appendChild(destPrice1)
-
-destinations[0].addEventListener('mouseover', () => {
-  destPrice1.style.visibility = 'visible'
-})
-destinations[0].addEventListener('mouseout', () => {
-  destPrice1.style.visibility = 'hidden'
-})
-
-
 // WHEEL
 const zoom1 = (event) => {
   event.preventDefault()
@@ -60,6 +41,37 @@ const adventureImg = document.querySelector('.inverse-content .img-content')
 letsGoImg.onwheel = zoom1
 adventureImg.onwheel = zoom2
 
+// COPY
+const source = document.activeElement
+const copied = document.createElement('p')
+copied.textContent = 'Copied!'
+copied.style.position = 'absolute'
+copied.style.zIndex = '5'
+copied.style.color = 'white'
+copied.style.background = '#ee8877'
+copied.style.padding = '10px'
+copied.style.fontSize = '15px'
+copied.style.opacity = '0'
+copied.style.transition = 'opacity 1000ms'
+source.prepend(copied)
+
+source.addEventListener('copy', (event) => {
+  event.preventDefault()
+  const selection = document.getSelection()
+  // console.log('selection', selection)
+  // console.log('event', event)
+  // console.log('source', source)
+  copied.style.opacity = '1'
+  copied.style.transition = 'opacity 1000ms'
+  copied.style.top = event.target.offsetTop+'px'
+  copied.style.left = event.target.offsetLeft+'px'
+
+  // console.log(
+  //   event.target.offsetHeight,
+  //   event.target.offsetWidth,
+  //   event.target.offsetTop,
+  //   event.target.offsetLeft)
+})
 
 // SCROLL - moving bus animation
 const homeContainer = document.querySelector('body')
@@ -68,7 +80,7 @@ const van = document.createElement('img')
 const divForVan = document.createElement('div')
 divForVan.className = 'bottom-div'
 van.src = "img/van.png"
-van.style.zIndex = '2'
+van.style.zIndex = '9'
 van.style.height = "200px"
 van.style.position = 'fixed'
 van.style.top = '-200px'
@@ -83,12 +95,11 @@ let ticking = false
 function doSomething(scroll_pos) {
   van.style.top = `${scroll_pos-300}px`
   van.style.transform = `rotate(-${scroll_pos/3}deg)`
-  // console.log(scroll_pos)
-  // next -> add space with a div
+
+  // next TODO -> add space with a div
   // when it gets to the bottom of the page
   // make van translate right to left @ 1010px
-  // next -> make third image zoom in 20% to 100%
-
+  // next TODO-> make third image zoom in 20% to 100%
 }
 
 window.addEventListener('scroll', function(e) {
@@ -102,67 +113,86 @@ window.addEventListener('scroll', function(e) {
   }
 })
 
+// DROP - couldn't get it to work :(
+  const dropCont = document.querySelector('.content-destination')
+  const dropImg = document.querySelector('.content-destination img')
+  const dropDiv = document.querySelector('.bottom-div')
+  dropCont.ondrop = `drop(event)`
+  dropCont.ondragover = `allowDrop(event)`
+  dropImg.ondragstart = `dragStart(event)`
+  dropImg.draggable = 'true'
+  dropImg.id = 'dragtarget'
+  dropImg.style.position = 'relative'
+  dropDiv.id = 'demo'
+  dropDiv.ondrop = `drop(event)`
+  dropDiv.ondragover = `allowDrop(event)`
+  // const demo = document.createElement('p')
+  // demo.textContent = 'testingggg'
+  // dropDiv.prepend(demo)
+
+  function dragStart(event) {
+    event.dataTransfer.setData('text', event.target.id)
+    document.getElementById('demo').innerHTML = 'Started to drag the p element'
+  }
+
+  function allowDrop(event) {
+    event.preventDefault()
+  }
+
+  function drop(event) {
+    event.preventDefault()
+    var data = event.dataTransfer.getData('text')
+    event.target.appendChild(document.getElementById(data))
+    document.getElementById('demo').innerHTML = 'The p element was dropped'
+  }
+
+  // external library works for dragging
+  const dragIndicator = document.createElement('p')
+  dropCont.style.position = 'relative'
+  dragIndicator.textContent = 'I\'M DRAGGABLE'
+  dragIndicator.style.position = 'absolute'
+  dragIndicator.style.top = '120px'
+  dragIndicator.style.left = '180px'
+  dragIndicator.style.fontSize = '2rem'
+  dragIndicator.style.opacity = '.5'
+  dropCont.appendChild(dragIndicator)
+  Drag.init(document.getElementById('dragtarget'))
 
 
-// DROP
-// couldn't get it to work :(
+  // BUTTON - alerts with choice selection
+  const choice = document.querySelectorAll('.content-pick h4')[0]
+  const choice1 = document.querySelectorAll('.content-pick h4')[1]
+  const choice2 = document.querySelectorAll('.content-pick h4')[2]
+  const button = document.querySelectorAll('.content-pick .btn')[0]
+  const button1 = document.querySelectorAll('.content-pick .btn')[1]
+  const button2 = document.querySelectorAll('.content-pick .btn')[2]
 
-const dropCont = document.querySelector('.content-destination')
-const dropImg = document.querySelector('.content-destination img')
-const dropDiv = document.querySelector('.bottom-div')
-dropCont.ondrop = `drop(event)`
-dropCont.ondragover = `allowDrop(event)`
-dropImg.ondragstart = `dragStart(event)`
-dropImg.draggable = 'true'
-dropImg.id = 'dragtarget'
-dropImg.style.position = 'relative'
-dropDiv.id = 'demo'
-dropDiv.ondrop = `drop(event)`
-dropDiv.ondragover = `allowDrop(event)`
-// const demo = document.createElement('p')
-// demo.textContent = 'testingggg'
-// dropDiv.prepend(demo)
+  button.addEventListener('mousedown', () => {
+    alert(`You chose ${choice.textContent}, great choice!`)
+  })
+  button1.addEventListener('mousedown', () => {
+    alert(`You chose ${choice1.textContent}, great choice!`)
+  })
+  button2.addEventListener('mousedown', () => {
+    alert(`You chose ${choice2.textContent}, great choice!`)
+  })
 
-
-function dragStart(event) {
-  event.dataTransfer.setData('text', event.target.id)
-  document.getElementById('demo').innerHTML = 'Started to drag the p element'
-}
-
-function allowDrop(event) {
-  event.preventDefault()
-}
-
-function drop(event) {
-  event.preventDefault()
-  var data = event.dataTransfer.getData('text')
-  event.target.appendChild(document.getElementById(data))
-  document.getElementById('demo').innerHTML = 'The p element was dropped'
-}
-
-// external library works for dragging
-const dragIndicator = document.createElement('p')
-dragIndicator.textContent = 'I\'m draggable!'
-dropCont.appendChild(dragIndicator)
-Drag.init(document.getElementById('dragtarget'))
-
-
-
-// BUTTON - alerts with choice selection
-const choice = document.querySelectorAll('.content-pick h4')[0]
-const choice1 = document.querySelectorAll('.content-pick h4')[1]
-const choice2 = document.querySelectorAll('.content-pick h4')[2]
-const button = document.querySelectorAll('.content-pick .btn')[0]
-const button1 = document.querySelectorAll('.content-pick .btn')[1]
-const button2 = document.querySelectorAll('.content-pick .btn')[2]
-
-button.addEventListener('mousedown', () => {
-  alert(`You chose ${choice.textContent}, great choice!`)
-})
-button1.addEventListener('mousedown', () => {
-  alert(`You chose ${choice1.textContent}, great choice!`)
-})
-button2.addEventListener('mousedown', () => {
-  alert(`You chose ${choice2.textContent}, great choice!`)
-})
-
+  // MOUSEOVER for *random* price
+  const destinations = document.querySelectorAll('.destination')
+  destinations.forEach(dest => {
+    let destP = document.createElement('p')
+    destP.textContent = `$`+ Math.floor(Math.random() * (1000 - 10) + 10)
+    destP.style.position = 'absolute'
+    destP.style.align = 'center'
+    destP.style.backgroundColor = 'lightblue'
+    destP.style.padding = '5px 50px'
+    destP.style.margin = '20px 40px'
+    destP.style.visibility = 'hidden'
+    dest.appendChild(destP)
+    dest.addEventListener('mouseover', () => {
+      destP.style.visibility = 'visible'
+    })
+    dest.addEventListener('mouseout', () => {
+      destP.style.visibility = 'hidden'
+    })
+  })
