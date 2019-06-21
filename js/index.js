@@ -1,3 +1,7 @@
+// Nav link refresh overritten
+document.querySelectorAll('.nav').forEach(link => {
+  link.addEventListener('click', (e) => e.preventDefault())
+})
 
 // MOUSEOVER - change image to a gif
 const headerContainer = document.querySelector('.intro')
@@ -22,24 +26,32 @@ headerImg.addEventListener('mouseout', () => {
 })
 
 // WHEEL
-const zoom1 = (event) => {
-  event.preventDefault()
-  scale += event.deltaY * -0.01 // Restrict scale
-  scale = Math.min(Math.max(1, scale), 2) // Apply scale transform
-  letsGoImg.style.transform = `scale(${scale})`
-}
 const zoom2 = (event) => {
   event.preventDefault()
   scale += event.deltaY * -0.01 // Restrict scale
-  scale = Math.min(Math.max(1, scale), 2) // Apply scale transform
+  scale = Math.min(Math.max(1, scale), 1.5) // Apply scale transform
   adventureImg.style.transform = `scale(${scale})`
 }
-
 let scale = 1
-const letsGoImg = document.querySelector('.img-content')
 const adventureImg = document.querySelector('.inverse-content .img-content')
-letsGoImg.onwheel = zoom1
 adventureImg.onwheel = zoom2
+
+
+// FOCUSIN and FOCUSOUT- nav items rotate when tabbing through
+const navLinks = document.querySelector('.nav')
+
+navLinks.addEventListener('focusin', (event) => {
+  event.target.style.transform = 'rotate(20deg)'
+  event.target.style.fontWeight = 'bold'
+  event.target.style.fontSize = '2rem'
+})
+
+navLinks.addEventListener('focusout', (event) => {
+  event.target.style.transform = ''
+  event.target.style.fontSize = ''
+  event.target.style.fontWeight = ''
+})
+
 
 // COPY
 const source = document.activeElement
@@ -57,14 +69,15 @@ source.prepend(copied)
 
 source.addEventListener('copy', (event) => {
   event.preventDefault()
-  const selection = document.getSelection()
+  // const selection = document.getSelection()
   // console.log('selection', selection)
+  // var selRange = selection.getRangeAt(0)
+  // console.log(selRange)
   // console.log('event', event)
-  // console.log('source', source)
   copied.style.opacity = '1'
   copied.style.transition = 'opacity 1000ms'
-  copied.style.top = event.target.offsetTop+'px'
-  copied.style.left = event.target.offsetLeft+'px'
+  copied.style.top = event.target.offsetTop + 'px'
+  copied.style.left = event.target.offsetLeft + 'px'
 
   // console.log(
   //   event.target.offsetHeight,
@@ -72,6 +85,15 @@ source.addEventListener('copy', (event) => {
   //   event.target.offsetTop,
   //   event.target.offsetLeft)
 })
+
+// let screenLog = document.querySelector('body')
+// document.addEventListener('click', logKey)
+
+// function logKey(e) {
+//   // screenLog.innerText =
+//   console.log(` Screen X/Y: ${e.screenX}, ${e.screenY}
+//     Client X/Y: ${e.clientX}, ${e.clientY}`)
+// }
 
 // SCROLL - moving bus animation
 const homeContainer = document.querySelector('body')
