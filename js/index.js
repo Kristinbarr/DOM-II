@@ -25,6 +25,25 @@ headerImg.addEventListener('mouseout', () => {
   headerImg.style.width = '100%'
 })
 
+// EVENT PROPOGATION
+const textCont = document.querySelector('.text-content')
+const textH2 = document.querySelector('.text-content h2')
+textCont.addEventListener('click', (e) => {
+  textCont.style.filter = 'blur(10px)'
+})
+textH2.addEventListener('click', (e) => {
+  textH2.style.filter = 'drop-shadow(10px 5px 4px #444444)'
+  textH2.style.color = 'darkblue'
+  e.stopPropagation()
+})
+textCont.addEventListener('mouseout', (e) => {
+  textCont.style.filter = ''
+})
+textH2.addEventListener('mouseout', (e) => {
+  textH2.style.filter = ''
+  textH2.style.color = ''
+})
+
 // WHEEL
 const zoom2 = (event) => {
   event.preventDefault()
@@ -36,6 +55,17 @@ let scale = 1
 const adventureImg = document.querySelector('.inverse-content .img-content')
 adventureImg.onwheel = zoom2
 
+// MOUSEDOWN
+const letsGoImg = document.querySelector('.img-content')
+// console.log(letsGoImg)
+letsGoImg.addEventListener('mousedown', (event) => {
+  event.preventDefault()
+  letsGoImg.style.filter = 'blur(10px)'
+})
+letsGoImg.addEventListener('mouseup', (event) => {
+  event.preventDefault()
+  letsGoImg.style.filter = ''
+})
 
 // FOCUSIN and FOCUSOUT- nav items rotate when tabbing through
 const navLinks = document.querySelector('.nav')
